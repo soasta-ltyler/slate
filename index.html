@@ -67,9 +67,7 @@
 <p>Add the following header to all of your requests
 <code class="prettyprint">X-Auth-Token:1234-ABC</code></p>
 
-<blockquote>
-<p>Make sure to replace <code class="prettyprint">1234-ABC</code> with your Token.</p>
-</blockquote>
+<aside class="notice">Make sure to replace `1234-ABC` with your Token.</aside>
 
 <h1 id="scommand">Scommand</h1>
 
@@ -480,15 +478,93 @@ At this time you can&rsquo;t create Test Environment via the API. You will need 
 </tr>
 </tbody></table>
 
+<h3 id="test-environment-states">Test Environment States</h3>
+
+<table><thead>
+<tr>
+<th>State</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>ERROR_BUILD_MISMATCH</td>
+<td>Extracted build does not match the environment&rsquo;s build setting</td>
+</tr>
+<tr>
+<td>TERMINATED_WITH_FAILURES</td>
+<td>Servers encountered failures when stopping</td>
+</tr>
+<tr>
+<td>CANCELLING</td>
+<td>Canceling environment servers while launch is in progress</td>
+</tr>
+<tr>
+<td>CANCELLED</td>
+<td>Environment servers have been canceled while launch is in progress</td>
+</tr>
+<tr>
+<td>LOADED</td>
+<td>The environment is loaded.</td>
+</tr>
+<tr>
+<td>ALLOCATING_DATABASE</td>
+<td>The environment is allocating a database server</td>
+</tr>
+<tr>
+<td>ALLOCATED_DATABASE</td>
+<td>The environment has allocated a database server</td>
+</tr>
+<tr>
+<td>CHECKED_DATABASE</td>
+<td>The environment has checked the database server</td>
+</tr>
+<tr>
+<td>ALLOCATING_MAIN</td>
+<td>The environment is allocating a main server</td>
+</tr>
+<tr>
+<td>ALLOCATED_MAIN</td>
+<td>The environment has allocated a main server</td>
+</tr>
+<tr>
+<td>CHECKED_MAIN</td>
+<td>The environment has checked the main server</td>
+</tr>
+<tr>
+<td>RUNNING</td>
+<td>The environment is running.</td>
+</tr>
+<tr>
+<td>TERMINATED</td>
+<td>The environment is stopped.</td>
+</tr>
+<tr>
+<td>TERMINATING</td>
+<td>The environment is stopping.</td>
+</tr>
+<tr>
+<td>PROCESS_FAILED</td>
+<td>Unable to talk to the resultsservice.</td>
+</tr>
+<tr>
+<td>VOLUME_NOT_FORMATTED</td>
+<td>The database volume needs to be formatted.</td>
+</tr>
+<tr>
+<td>VOLUME_NOT_AVAILABLE</td>
+<td>The volume is not available</td>
+</tr>
+<tr>
+<td>EXTERNALLY_TERMINATED</td>
+<td>Instance was terminated by external means.</td>
+</tr>
+</tbody></table>
+
 <h2 id="start-test-environment">Start Test Environment</h2>
 <pre class="highlight shell"><code>curl -X POST -H <span class="s2">"X-Auth-Token:1234-ABC"</span> https://cloudtestmanager.soasta.com/concerto/services/rest/CloudService/v1/environment/&lt;id&gt;/state/start
 </code></pre>
 <pre class="highlight ruby"><code><span class="n">scommand</span> <span class="n">start</span><span class="o">-</span><span class="n">env</span> <span class="n">url</span><span class="o">=</span><span class="n">https</span><span class="ss">:/</span><span class="o">/&lt;</span><span class="n">hostname</span><span class="o">&gt;</span><span class="sr">/concerto username=user password=password name="my env"
 </span></code></pre>
-
-<blockquote>
-<p>The above command returns JSON structured like this:</p>
-</blockquote>
 <pre class="highlight json"><code><span class="p">{</span><span class="w">
 </span><span class="nt">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ALLOCATING"</span><span class="p">,</span><span class="w">
 </span><span class="nt">"time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"12/2/15 3:13 PM"</span><span class="w">
@@ -527,12 +603,7 @@ At this time you can&rsquo;t create Test Environment via the API. You will need 
 <pre class="highlight shell"><code>curl -X POST -H <span class="s2">"X-Auth-Token:1234-ABC"</span> https://cloudtestmanager.soasta.com/concerto/services/rest/CloudService/v1/environment/&lt;id&gt;/state/terminate
 </code></pre>
 <pre class="highlight ruby"><code><span class="n">scommand</span> <span class="n">terminate</span><span class="o">-</span><span class="n">env</span> <span class="n">url</span><span class="o">=</span><span class="n">https</span><span class="ss">:/</span><span class="o">/</span><span class="n">cloudtestmanager</span><span class="p">.</span><span class="nf">soasta</span><span class="p">.</span><span class="nf">com</span><span class="o">/</span><span class="n">concerto</span> <span class="n">username</span><span class="o">=</span><span class="n">user</span> <span class="n">password</span><span class="o">=</span><span class="n">password</span> <span class="nb">name</span><span class="o">=</span><span class="s2">"my env"</span>
-
 </code></pre>
-
-<blockquote>
-<p>The above command returns JSON structured like this:</p>
-</blockquote>
 <pre class="highlight json"><code><span class="p">{</span><span class="w">
 </span><span class="nt">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"TERMINATING"</span><span class="p">,</span><span class="w">
 </span><span class="nt">"time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"12/2/15 3:13 PM"</span><span class="w">
@@ -547,7 +618,7 @@ If the Test Environmentis allocating this method will stop the Test Environment 
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p>`PUT: http://cloudtestmanager.soasta.com/concerto/services/rest/CloudService/v1/environment/<id>/state/<state>&rsquo;</p>
+<p><code class="prettyprint">PUT: http://cloudtestmanager.soasta.com/concerto/services/rest/CloudService/v1/environment/&lt;id&gt;/state/&lt;state&gt;</code></p>
 
 <h3 id="query-parameters">Query Parameters</h3>
 
@@ -596,15 +667,6 @@ If the Test Environmentis allocating this method will stop the Test Environment 
 <td>Internal Server Error &ndash; The request caused a server error. See below for details.</td>
 </tr>
 </tbody></table>
-
-<aside class="notice">
-Error Messages will include the following JSON
-</aside>
-<pre class="highlight json"><code><span class="p">{</span><span class="w">
-    </span><span class="err">error:</span><span class="nt">"ErrorID"</span><span class="err">,</span><span class="w">
-    </span><span class="err">message</span><span class="p">:</span><span class="s2">"Error Description"</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
 
       </div>
       <div class="dark-box">
