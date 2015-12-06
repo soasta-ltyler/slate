@@ -21,17 +21,30 @@ This document describes how to use the CloudService API.
 # Authentication
 
 ## Getting a Token
-> To authorize, You will need to request a Security Token from CloudTest:
 
 ```shell
 curl -X PUT -H "Content-type: application/json" --data-binary '{"userName":"user", "password":"hi"}' "https://<hostname>/concerto/services/rest/RepositoryService/v1/Tokens"
 ```
+```json
+{"token":"abc123"}
+```
+
+
 ### HTTP Request 
 
 `GET https://<hostname>/concerto/services/rest/RepositoryService/v1/Tokens`
 
+JSON Payload:
+`{"userName:"user", "password":"hi"}`
+
+Headers:
+`-H Content-type: application/json`
+
+<aside class="notice">If your CloudTest instance uses a Self Signed certificate, you will need to request a token without strict ssl set. For curl this is -k</aside>
+
 ## Authentication Header
-Add the following header to all of your requests
+The following header must be included in all of your requests to the CloudSerivce API. 
+
 `X-Auth-Token:1234-ABC`
 
 <aside class="notice">Make sure to replace `1234-ABC` with your Token.</aside>
