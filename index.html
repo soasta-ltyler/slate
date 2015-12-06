@@ -51,21 +51,28 @@
 <h1 id="authentication">Authentication</h1>
 
 <h2 id="getting-a-token">Getting a Token</h2>
-
-<blockquote>
-<p>To authorize, You will need to request a Security Token from CloudTest:</p>
-</blockquote>
 <pre class="highlight shell"><code>curl -X PUT -H <span class="s2">"Content-type: application/json"</span> --data-binary <span class="s1">'{"userName":"user", "password":"hi"}'</span> <span class="s2">"https://&lt;hostname&gt;/concerto/services/rest/RepositoryService/v1/Tokens"</span>
 </code></pre>
+<pre class="highlight json"><code><span class="p">{</span><span class="nt">"token"</span><span class="p">:</span><span class="s2">"abc123"</span><span class="p">}</span><span class="w">
+</span></code></pre>
 
 <h3 id="http-request">HTTP Request</h3>
 
 <p><code class="prettyprint">GET https://&lt;hostname&gt;/concerto/services/rest/RepositoryService/v1/Tokens</code></p>
 
+<p>JSON Payload:
+<code class="prettyprint">{&quot;userName:&quot;user&quot;, &quot;password&quot;:&quot;hi&quot;}</code></p>
+
+<p>Headers:
+<code class="prettyprint">-H Content-type: application/json</code></p>
+
+<aside class="notice">If your CloudTest instance uses a Self Signed certificate, you will need to request a token without strict ssl set. For curl this is -k</aside>
+
 <h2 id="authentication-header">Authentication Header</h2>
 
-<p>Add the following header to all of your requests
-<code class="prettyprint">X-Auth-Token:1234-ABC</code></p>
+<p>The following header must be included in all of your requests to the CloudSerivce API. </p>
+
+<p><code class="prettyprint">X-Auth-Token:1234-ABC</code></p>
 
 <aside class="notice">Make sure to replace `1234-ABC` with your Token.</aside>
 
