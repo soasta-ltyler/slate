@@ -34,19 +34,21 @@ under the License.
       
     $(".lang-selector a").removeClass('active');
     $(".lang-selector a[data-language-name='" + language + "']").addClass('active');
-    for (var i=0; i < languages.length; i++) {
-      if (languages[i] == 'SCommand')
-      {
-        languages[i] = 'ruby'
-        console.log('hiding  ' + languages[i])
-        // hide json as well
-        $(".highlight." + 'json').hide();
-      }
-      $(".highlight." + languages[i]).hide();
+    if (language == 'ruby')
+    {
+      // hide json as well
+      $(".highlight." + 'json').hide();
+      $(".highlight." + 'shell').hide();
+
+    }
+    else
+    {
+      $(".highlight." + 'ruby').hide();
+      $(".highlight." + 'json').show();
+
     }
 
     $(".highlight." + language).show();
-
     global.toc.calculateHeights();
 
     // scroll to the new location of the position

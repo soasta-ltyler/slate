@@ -37,19 +37,16 @@ Add the following header to all of your requests
 > Make sure to replace `1234-ABC` with your Token.
 
 #Scommand 
+
 ## Options
-`name (STRING)`  This is the name of the Object (Grid/RSDB, etc) you wish to interact with.
-`wait (BOOLEAN)` This command will tell SCommand if it should wait until the Object you are interacting with is in a 'Ready' status. For Grids, this means that the Grid has been ALLOCATED and CHECKED. For TestEnvironments this means that both of the Test Environment servers have been ALLOCATED and CHECKED.
-`timeout (INTEGER)` The time in seconds you want SCommand to wait for the Object you are interacting with. Default (600 seconds)
-`terminateOnFailure (BOOLEAN)`   If the Object you are interacting with exhausts (timeout), then will tell Scommand if it should automatically terminate the failed gridDefault (true)
-`strictSSL=BOOLEAN(true/false)`  Default: false : set SCommand to enforce strict SSL
-`printStatus=BOOLEAN(true/false)` Default: true  : Toggles SCommmand's ability to print status updates to console
-
-
-Parameter | Default | Description
---------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
+Parameter | Format | Default | Description |
+--------- | ------- | --------- |----------- |
+name | String | None | This is the name of the Object (Grid/RSDB, etc) you wish to interact with.
+wait | Boolean | True | This command will tell SCommand if it should wait until the Object you are interacting with is in a 'Ready' status. 
+timeout | Integer | 600 | The time in seconds you want SCommand to wait for the Object you are interacting with.
+terminateOnFailure | Boolean | True | If the Object you are interacting with exhausts (timeout), then will tell Scommand if it should automatically terminate the failed Object
+strictSSL | Boolean | False | set SCommand to enforce strict SSL
+printStatus | Boolean | True | Toggles SCommmand's ability to print status updates to console
 
 # Grids
 
@@ -66,7 +63,6 @@ curl -X POST -H "X-Auth-Token:1234-ABC" http://<hostname>/concerto/services/rest
 scommand start-grid url=https://<hostname>/concerto username=user password=password name="ec2 grid"
 ```
 
-> The above command returns JSON structured like this:
 
 ```json
 {
@@ -98,8 +94,6 @@ At this time you can't create Grids via the API. You will need to set the grid u
 curl -H "X-Auth-Token:1234-ABC" http://<hostname>/concerto/services/rest/CloudService/v1/grid/<id>/instances/<instanceID>
 ```
 
-> The above command returns JSON structured like this:
-
 ```json
 {
 "id": "1416",
@@ -129,6 +123,28 @@ Parameter | Description
 ID | ID of the Grid
 InstanceID | ID of the grid instance (From POST Call)
 
+### States
+
+State | Description
+--------- | -----------
+LOADED |  The grid has been loaded and is ready to start.
+ALLOCATING |  The grid is allocating servers. 
+ALLOCATED | The grid has finished allocating servers, with no failures.
+ALLOCATED_WITH_FAILURES  | The grid has finished allocating servers, with some failures.
+ALLOCATE_FAILED | The grid failed to allocate any servers.
+CHECKING  | The grid is in the process of performing server health checks.
+CHECKED | The grid has finished performing server health checks, with no failures.
+CHECKED_AND_TERMINATING | The allocated servers are checked and the pending server are terminating.
+CHECKED_AND_DEPLOYING | The allocated servers are checked and the pending servers are still deploying.
+CHECKED_WITH_FAILURES | The grid has finished performing server health checks, with some failures.
+STARTING_MONITORS | The grid is in the process of setting up monitoring for the allocated servers.
+CANCELLING | The grid is in the process of cancelling.
+CANCELLED | The grid has been cancelled.
+TERMINATING | The grid is in the process of terminating.
+TERMINATED | The grid has been terminated.
+TERMINATED_WITH_FAILURES | The grid has been terminated, with some failures.
+
+
 
 ## List All Grid Instances
 
@@ -136,7 +152,6 @@ InstanceID | ID of the grid instance (From POST Call)
 curl -H "X-Auth-Token:1234-ABC" http://<hostname>/concerto/services/rest/CloudService/v1/grid/instances/`
 ```
 
-> The above command returns JSON structured like this:
 
 ```json
 [
@@ -170,7 +185,6 @@ curl -X DELETE -H "X-Auth-Token:1234-ABC" http://<hostname>/concerto/services/re
 ```ruby
 scommand terminate-grid url=https://<hostname>/concerto username=user password=password name="ec2 grid"
 ```
-> The above command does not return any JSON
 
 
 This endpoint terminates a grid
@@ -199,7 +213,7 @@ Returns the State of the RSDB
 curl -X POST -H "X-Auth-Token:1234-ABC" http://<hostname>/concerto/services/rest/CloudService/v1/rsdb/<id>/state/
 ```
 
-> The above command returns JSON structured like this:
+
 
 ```json
 {
@@ -233,7 +247,6 @@ curl -X POST -H "X-Auth-Token:1234-ABC" http://<hostname>/concerto/services/rest
 scommand start-rsdb url=https://<hostname>/concerto username=user password=password name="my rsdb"
 ```
 
-> The above command returns JSON structured like this:
 
 ```json
 {
@@ -269,7 +282,6 @@ curl -X POST -H "X-Auth-Token:1234-ABC" http://<hostname>/concerto/services/rest
 scommand terminate-rsdb url=https://<hostname>/concerto username=user password=password name="my rsdb"
 ```
 
-> The above command returns JSON structured like this:
 
 ```json
 {
