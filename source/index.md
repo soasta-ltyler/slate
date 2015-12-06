@@ -34,7 +34,7 @@ curl -X PUT -H "Content-type: application/json" --data-binary '{"userName":"user
 Add the following header to all of your requests
 `X-Auth-Token:1234-ABC`
 
-> Make sure to replace `1234-ABC` with your Token.
+<aside class="notice">Make sure to replace `1234-ABC` with your Token.</aside>
 
 #Scommand 
 
@@ -213,8 +213,6 @@ Returns the State of the RSDB
 curl -X POST -H "X-Auth-Token:1234-ABC" http://<hostname>/concerto/services/rest/CloudService/v1/rsdb/<id>/state/
 ```
 
-
-
 ```json
 {
 "state": "RUNNING",
@@ -343,6 +341,29 @@ Parameter | Description
 --------- | -----------
 ID | ID of the RSDB
 
+### Test Environment States
+
+
+State | Description
+--------- | -----------
+ERROR_BUILD_MISMATCH  | Extracted build does not match the environment's build setting
+TERMINATED_WITH_FAILURES |  Servers encountered failures when stopping
+CANCELLING | Canceling environment servers while launch is in progress
+CANCELLED | Environment servers have been canceled while launch is in progress
+LOADED | The environment is loaded.
+ALLOCATING_DATABASE | The environment is allocating a database server
+ALLOCATED_DATABASE | The environment has allocated a database server
+CHECKED_DATABASE | The environment has checked the database server
+ALLOCATING_MAIN | The environment is allocating a main server
+ALLOCATED_MAIN | The environment has allocated a main server
+CHECKED_MAIN | The environment has checked the main server
+RUNNING | The environment is running.
+TERMINATED | The environment is stopped.
+TERMINATING | The environment is stopping.
+PROCESS_FAILED | Unable to talk to the resultsservice.
+VOLUME_NOT_FORMATTED | The database volume needs to be formatted.
+VOLUME_NOT_AVAILABLE | The volume is not available
+EXTERNALLY_TERMINATED | Instance was terminated by external means. 
 
 
 ## Start Test Environment
@@ -354,8 +375,6 @@ curl -X POST -H "X-Auth-Token:1234-ABC" https://cloudtestmanager.soasta.com/conc
 ```ruby
 scommand start-env url=https://<hostname>/concerto username=user password=password name="my env"
 ```
-
-> The above command returns JSON structured like this:
 
 ```json
 {
@@ -389,10 +408,8 @@ curl -X POST -H "X-Auth-Token:1234-ABC" https://cloudtestmanager.soasta.com/conc
 
 ```ruby
 scommand terminate-env url=https://cloudtestmanager.soasta.com/concerto username=user password=password name="my env"
-
 ```
 
-> The above command returns JSON structured like this:
 
 ```json
 {
@@ -409,7 +426,7 @@ If the Test Environmentis allocating this method will stop the Test Environment 
 
 ### HTTP Request
 
-`PUT: http://cloudtestmanager.soasta.com/concerto/services/rest/CloudService/v1/environment/<id>/state/<state>'
+`PUT: http://cloudtestmanager.soasta.com/concerto/services/rest/CloudService/v1/environment/<id>/state/<state>`
 
 ### Query Parameters
 Parameter | Description
