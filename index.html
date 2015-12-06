@@ -287,11 +287,9 @@ At this time you can&rsquo;t create RSDBs via the API. You will need to set the 
 
 <h2 id="start-rsdb">Start RSDB</h2>
 <pre class="highlight shell"><code>curl -X POST -H <span class="s2">"X-Auth-Token:1234-ABC"</span> http://&lt;hostname&gt;/concerto/services/rest/CloudService/v1/rsdb/&lt;id&gt;/state/start
-
-
-<span class="sb">```</span>ruby
-scommand start-rsdb <span class="nv">url</span><span class="o">=</span>https://&lt;hostname&gt;/concerto <span class="nv">username</span><span class="o">=</span>user <span class="nv">password</span><span class="o">=</span>password <span class="nv">name</span><span class="o">=</span><span class="s2">"my rsdb"</span>
 </code></pre>
+<pre class="highlight ruby"><code><span class="n">scommand</span> <span class="n">start</span><span class="o">-</span><span class="n">rsdb</span> <span class="n">url</span><span class="o">=</span><span class="n">https</span><span class="ss">:/</span><span class="o">/&lt;</span><span class="n">hostname</span><span class="o">&gt;</span><span class="sr">/concerto username=user password=password name="my rsdb"
+</span></code></pre>
 
 <blockquote>
 <p>The above command returns JSON structured like this:</p>
@@ -331,7 +329,7 @@ At this time you can&rsquo;t create RSDBs via the API. You will need to set the 
 </tbody></table>
 
 <h2 id="terminate-rsdb">Terminate RSDB</h2>
-<pre class="highlight plaintext"><code>curl -X POST -H "X-Auth-Token:1234-ABC" http://&lt;hostname&gt;/concerto/services/rest/CloudService/v1/rsdb/&lt;id&gt;/state/terminate
+<pre class="highlight shell"><code>curl -X POST -H <span class="s2">"X-Auth-Token:1234-ABC"</span> http://&lt;hostname&gt;/concerto/services/rest/CloudService/v1/rsdb/&lt;id&gt;/state/terminate
 </code></pre>
 <pre class="highlight ruby"><code><span class="n">scommand</span> <span class="n">terminate</span><span class="o">-</span><span class="n">rsdb</span> <span class="n">url</span><span class="o">=</span><span class="n">https</span><span class="ss">:/</span><span class="o">/&lt;</span><span class="n">hostname</span><span class="o">&gt;</span><span class="sr">/concerto username=user password=password name="my rsdb"
 </span></code></pre>
