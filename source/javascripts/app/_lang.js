@@ -24,12 +24,25 @@ under the License.
   function activateLanguage(language) {
     if (!language) return;
     if (language === "") return;
-
+    
+    if (language == 'SCommand')
+    {
+      console.log('scommand')
+      language = 'ruby'
+    }
+    console.log('setting to ' + language)
+      
     $(".lang-selector a").removeClass('active');
     $(".lang-selector a[data-language-name='" + language + "']").addClass('active');
     for (var i=0; i < languages.length; i++) {
+      if (languages[i] == 'SCommand')
+      {
+        languages[i] = 'ruby'
+        console.log('hiding  ' + languages[i])
+      }
       $(".highlight." + languages[i]).hide();
     }
+
     $(".highlight." + language).show();
 
     global.toc.calculateHeights();
