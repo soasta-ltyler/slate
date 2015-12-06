@@ -39,6 +39,8 @@ under the License.
       {
         languages[i] = 'ruby'
         console.log('hiding  ' + languages[i])
+        // hide json as well
+        $(".highlight." + 'json').hide();
       }
       $(".highlight." + languages[i]).hide();
     }

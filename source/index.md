@@ -154,7 +154,6 @@ curl -H "X-Auth-Token:1234-ABC" http://<hostname>/concerto/services/rest/CloudSe
 }
 ]
 ```
-
 This endpoint retrieves a list of started Grids 
 
 
@@ -228,7 +227,7 @@ ID | ID of the RSDB
 
 ```shell
 curl -X POST -H "X-Auth-Token:1234-ABC" http://<hostname>/concerto/services/rest/CloudService/v1/rsdb/<id>/state/start
-
+```
  
 ```ruby
 scommand start-rsdb url=https://<hostname>/concerto username=user password=password name="my rsdb"
@@ -262,7 +261,7 @@ state | The State you wish to set the RSDB (Accepted values: start, stop, termin
 
 ## Terminate RSDB
 
-```Curl 
+```shell
 curl -X POST -H "X-Auth-Token:1234-ABC" http://<hostname>/concerto/services/rest/CloudService/v1/rsdb/<id>/state/terminate
 ```
 
