@@ -75,29 +75,49 @@
 
 <h2 id="options">Options</h2>
 
-<p><code class="prettyprint">name (STRING)</code>  This is the name of the Object (Grid/RSDB, etc) you wish to interact with.
-<code class="prettyprint">wait (BOOLEAN)</code> This command will tell SCommand if it should wait until the Object you are interacting with is in a &lsquo;Ready&rsquo; status. For Grids, this means that the Grid has been ALLOCATED and CHECKED. For TestEnvironments this means that both of the Test Environment servers have been ALLOCATED and CHECKED.
-<code class="prettyprint">timeout (INTEGER)</code> The time in seconds you want SCommand to wait for the Object you are interacting with. Default (600 seconds)
-<code class="prettyprint">terminateOnFailure (BOOLEAN)</code>   If the Object you are interacting with exhausts (timeout), then will tell Scommand if it should automatically terminate the failed gridDefault (true)
-<code class="prettyprint">strictSSL=BOOLEAN(true/false)</code>  Default: false : set SCommand to enforce strict SSL
-<code class="prettyprint">printStatus=BOOLEAN(true/false)</code> Default: true  : Toggles SCommmand&rsquo;s ability to print status updates to console</p>
-
 <table><thead>
 <tr>
 <th>Parameter</th>
+<th>Format</th>
 <th>Default</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>include_cats</td>
-<td>false</td>
-<td>If set to true, the result will also include cats.</td>
+<td>name</td>
+<td>String</td>
+<td>None</td>
+<td>This is the name of the Object (Grid/RSDB, etc) you wish to interact with.</td>
 </tr>
 <tr>
-<td>available</td>
-<td>true</td>
-<td>If set to false, the result will include kittens that have already been adopted.</td>
+<td>wait</td>
+<td>Boolean</td>
+<td>True</td>
+<td>This command will tell SCommand if it should wait until the Object you are interacting with is in a &lsquo;Ready&rsquo; status.</td>
+</tr>
+<tr>
+<td>timeout</td>
+<td>Integer</td>
+<td>600</td>
+<td>The time in seconds you want SCommand to wait for the Object you are interacting with.</td>
+</tr>
+<tr>
+<td>terminateOnFailure</td>
+<td>Boolean</td>
+<td>True</td>
+<td>If the Object you are interacting with exhausts (timeout), then will tell Scommand if it should automatically terminate the failed Object</td>
+</tr>
+<tr>
+<td>strictSSL</td>
+<td>Boolean</td>
+<td>False</td>
+<td>set SCommand to enforce strict SSL</td>
+</tr>
+<tr>
+<td>printStatus</td>
+<td>Boolean</td>
+<td>True</td>
+<td>Toggles SCommmand&rsquo;s ability to print status updates to console</td>
 </tr>
 </tbody></table>
 
@@ -111,10 +131,6 @@ For SCommand we will make that request for you, so you will only need to specify
 </code></pre>
 <pre class="highlight ruby"><code><span class="n">scommand</span> <span class="n">start</span><span class="o">-</span><span class="n">grid</span> <span class="n">url</span><span class="o">=</span><span class="n">https</span><span class="ss">:/</span><span class="o">/&lt;</span><span class="n">hostname</span><span class="o">&gt;</span><span class="sr">/concerto username=user password=password name="ec2 grid"
 </span></code></pre>
-
-<blockquote>
-<p>The above command returns JSON structured like this:</p>
-</blockquote>
 <pre class="highlight json"><code><span class="p">{</span><span class="w">
 </span><span class="nt">"instanceID"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4cc3d2ca7abfc560:-3ca6245e:15163e5c497:-729c"</span><span class="p">,</span><span class="w">
 </span><span class="nt">"numberAllocatedCollectors"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
@@ -141,10 +157,6 @@ At this time you can&rsquo;t create Grids via the API. You will need to set the 
 <h2 id="get-grid-instance">Get Grid Instance</h2>
 <pre class="highlight shell"><code>curl -H <span class="s2">"X-Auth-Token:1234-ABC"</span> http://&lt;hostname&gt;/concerto/services/rest/CloudService/v1/grid/&lt;id&gt;/instances/&lt;instanceID&gt;
 </code></pre>
-
-<blockquote>
-<p>The above command returns JSON structured like this:</p>
-</blockquote>
 <pre class="highlight json"><code><span class="p">{</span><span class="w">
 </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1416"</span><span class="p">,</span><span class="w">
 </span><span class="nt">"instanceID"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4cc3d2ca7abfc560:-3ca6245e:15164d42ae6:-5f2a"</span><span class="p">,</span><span class="w">
@@ -183,13 +195,83 @@ At this time you can&rsquo;t create Grids via the API. You will need to set the 
 </tr>
 </tbody></table>
 
+<h3 id="states">States</h3>
+
+<table><thead>
+<tr>
+<th>State</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>LOADED</td>
+<td>The grid has been loaded and is ready to start.</td>
+</tr>
+<tr>
+<td>ALLOCATING</td>
+<td>The grid is allocating servers.</td>
+</tr>
+<tr>
+<td>ALLOCATED</td>
+<td>The grid has finished allocating servers, with no failures.</td>
+</tr>
+<tr>
+<td>ALLOCATED_WITH_FAILURES</td>
+<td>The grid has finished allocating servers, with some failures.</td>
+</tr>
+<tr>
+<td>ALLOCATE_FAILED</td>
+<td>The grid failed to allocate any servers.</td>
+</tr>
+<tr>
+<td>CHECKING</td>
+<td>The grid is in the process of performing server health checks.</td>
+</tr>
+<tr>
+<td>CHECKED</td>
+<td>The grid has finished performing server health checks, with no failures.</td>
+</tr>
+<tr>
+<td>CHECKED_AND_TERMINATING</td>
+<td>The allocated servers are checked and the pending server are terminating.</td>
+</tr>
+<tr>
+<td>CHECKED_AND_DEPLOYING</td>
+<td>The allocated servers are checked and the pending servers are still deploying.</td>
+</tr>
+<tr>
+<td>CHECKED_WITH_FAILURES</td>
+<td>The grid has finished performing server health checks, with some failures.</td>
+</tr>
+<tr>
+<td>STARTING_MONITORS</td>
+<td>The grid is in the process of setting up monitoring for the allocated servers.</td>
+</tr>
+<tr>
+<td>CANCELLING</td>
+<td>The grid is in the process of cancelling.</td>
+</tr>
+<tr>
+<td>CANCELLED</td>
+<td>The grid has been cancelled.</td>
+</tr>
+<tr>
+<td>TERMINATING</td>
+<td>The grid is in the process of terminating.</td>
+</tr>
+<tr>
+<td>TERMINATED</td>
+<td>The grid has been terminated.</td>
+</tr>
+<tr>
+<td>TERMINATED_WITH_FAILURES</td>
+<td>The grid has been terminated, with some failures.</td>
+</tr>
+</tbody></table>
+
 <h2 id="list-all-grid-instances">List All Grid Instances</h2>
 <pre class="highlight shell"><code>curl -H <span class="s2">"X-Auth-Token:1234-ABC"</span> http://&lt;hostname&gt;/concerto/services/rest/CloudService/v1/grid/instances/<span class="sb">`</span>
 </code></pre>
-
-<blockquote>
-<p>The above command returns JSON structured like this:</p>
-</blockquote>
 <pre class="highlight json"><code><span class="p">[</span><span class="w">
 </span><span class="p">{</span><span class="w">
   </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1416"</span><span class="p">,</span><span class="w">
@@ -217,10 +299,6 @@ At this time you can&rsquo;t create Grids via the API. You will need to set the 
 </code></pre>
 <pre class="highlight ruby"><code><span class="n">scommand</span> <span class="n">terminate</span><span class="o">-</span><span class="n">grid</span> <span class="n">url</span><span class="o">=</span><span class="n">https</span><span class="ss">:/</span><span class="o">/&lt;</span><span class="n">hostname</span><span class="o">&gt;</span><span class="sr">/concerto username=user password=password name="ec2 grid"
 </span></code></pre>
-
-<blockquote>
-<p>The above command does not return any JSON</p>
-</blockquote>
 
 <p>This endpoint terminates a grid</p>
 
@@ -251,10 +329,6 @@ At this time you can&rsquo;t create Grids via the API. You will need to set the 
 <p>Returns the State of the RSDB</p>
 <pre class="highlight shell"><code>curl -X POST -H <span class="s2">"X-Auth-Token:1234-ABC"</span> http://&lt;hostname&gt;/concerto/services/rest/CloudService/v1/rsdb/&lt;id&gt;/state/
 </code></pre>
-
-<blockquote>
-<p>The above command returns JSON structured like this:</p>
-</blockquote>
 <pre class="highlight json"><code><span class="p">{</span><span class="w">
 </span><span class="nt">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"RUNNING"</span><span class="p">,</span><span class="w">
 </span><span class="nt">"time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"12/2/15 3:13 PM"</span><span class="w">
@@ -290,10 +364,6 @@ At this time you can&rsquo;t create RSDBs via the API. You will need to set the 
 </code></pre>
 <pre class="highlight ruby"><code><span class="n">scommand</span> <span class="n">start</span><span class="o">-</span><span class="n">rsdb</span> <span class="n">url</span><span class="o">=</span><span class="n">https</span><span class="ss">:/</span><span class="o">/&lt;</span><span class="n">hostname</span><span class="o">&gt;</span><span class="sr">/concerto username=user password=password name="my rsdb"
 </span></code></pre>
-
-<blockquote>
-<p>The above command returns JSON structured like this:</p>
-</blockquote>
 <pre class="highlight json"><code><span class="p">{</span><span class="w">
 </span><span class="nt">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ALLOCATING"</span><span class="p">,</span><span class="w">
 </span><span class="nt">"time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"12/2/15 3:13 PM"</span><span class="w">
@@ -333,10 +403,6 @@ At this time you can&rsquo;t create RSDBs via the API. You will need to set the 
 </code></pre>
 <pre class="highlight ruby"><code><span class="n">scommand</span> <span class="n">terminate</span><span class="o">-</span><span class="n">rsdb</span> <span class="n">url</span><span class="o">=</span><span class="n">https</span><span class="ss">:/</span><span class="o">/&lt;</span><span class="n">hostname</span><span class="o">&gt;</span><span class="sr">/concerto username=user password=password name="my rsdb"
 </span></code></pre>
-
-<blockquote>
-<p>The above command returns JSON structured like this:</p>
-</blockquote>
 <pre class="highlight json"><code><span class="p">{</span><span class="w">
 </span><span class="nt">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"TERMINATING"</span><span class="p">,</span><span class="w">
 </span><span class="nt">"time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"12/2/15 3:13 PM"</span><span class="w">
@@ -503,10 +569,6 @@ If the Test Environmentis allocating this method will stop the Test Environment 
 
           <h1 id="errors">Errors</h1>
 
-<aside class="notice">This error section is stored in a separate file in `includes/_errors.md`. Slate allows you to optionally separate out your docs into many files&hellip;just save them to the `includes` folder and add them to the top of your `index.md`&rsquo;s frontmatter. Files are included in the order listed.</aside>
-
-<p>The Kittn API uses the following error codes:</p>
-
 <table><thead>
 <tr>
 <th>Error Code</th>
@@ -515,49 +577,34 @@ If the Test Environmentis allocating this method will stop the Test Environment 
 </thead><tbody>
 <tr>
 <td>400</td>
-<td>Bad Request &ndash; Your request sucks</td>
+<td>Bad Request &ndash; Input Error</td>
 </tr>
 <tr>
 <td>401</td>
-<td>Unauthorized &ndash; Your API key is wrong</td>
-</tr>
-<tr>
-<td>403</td>
-<td>Forbidden &ndash; The kitten requested is hidden for administrators only</td>
+<td>Unauthorized &ndash; The Authorization Token is invalid</td>
 </tr>
 <tr>
 <td>404</td>
-<td>Not Found &ndash; The specified kitten could not be found</td>
+<td>Not Found &ndash; The specified resource could not be found</td>
 </tr>
 <tr>
 <td>405</td>
-<td>Method Not Allowed &ndash; You tried to access a kitten with an invalid method</td>
-</tr>
-<tr>
-<td>406</td>
-<td>Not Acceptable &ndash; You requested a format that isn&rsquo;t json</td>
-</tr>
-<tr>
-<td>410</td>
-<td>Gone &ndash; The kitten requested has been removed from our servers</td>
-</tr>
-<tr>
-<td>418</td>
-<td>I&rsquo;m a teapot</td>
-</tr>
-<tr>
-<td>429</td>
-<td>Too Many Requests &ndash; You&rsquo;re requesting too many kittens! Slow down!</td>
+<td>Method Not Allowed &ndash; Invalid method used to access resource</td>
 </tr>
 <tr>
 <td>500</td>
-<td>Internal Server Error &ndash; We had a problem with our server. Try again later.</td>
-</tr>
-<tr>
-<td>503</td>
-<td>Service Unavailable &ndash; We&rsquo;re temporarially offline for maintanance. Please try again later.</td>
+<td>Internal Server Error &ndash; The request caused a server error. See below for details.</td>
 </tr>
 </tbody></table>
+
+<aside class="notice">
+Error Messages will include the following JSON
+</aside>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+    </span><span class="err">error:</span><span class="nt">"ErrorID"</span><span class="err">,</span><span class="w">
+    </span><span class="err">message</span><span class="p">:</span><span class="s2">"Error Description"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
 
       </div>
       <div class="dark-box">
