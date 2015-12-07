@@ -101,6 +101,10 @@ At this time you can't create Grids via the API. You will need to set the grid u
 
 `POST: http://<hostname>/concerto/services/rest/CloudService/v1/grid/<id>/intances`
 
+Parameter | Description
+--------- | -----------
+ID | ID of the Grid
+
 ## Get Grid Instance
 
 ```shell
@@ -138,24 +142,24 @@ InstanceID | ID of the grid instance (From POST Call)
 
 ### States
 
-State | Description
---------- | -----------
-LOADED |  The grid has been loaded and is ready to start.
-ALLOCATING |  The grid is allocating servers. 
-ALLOCATED | The grid has finished allocating servers, with no failures.
-ALLOCATED_WITH_FAILURES  | The grid has finished allocating servers, with some failures.
-ALLOCATE_FAILED | The grid failed to allocate any servers.
-CHECKING  | The grid is in the process of performing server health checks.
-CHECKED | The grid has finished performing server health checks, with no failures.
-CHECKED_AND_TERMINATING | The allocated servers are checked and the pending server are terminating.
-CHECKED_AND_DEPLOYING | The allocated servers are checked and the pending servers are still deploying.
-CHECKED_WITH_FAILURES | The grid has finished performing server health checks, with some failures.
-STARTING_MONITORS | The grid is in the process of setting up monitoring for the allocated servers.
-CANCELLING | The grid is in the process of cancelling.
-CANCELLED | The grid has been cancelled.
-TERMINATING | The grid is in the process of terminating.
-TERMINATED | The grid has been terminated.
-TERMINATED_WITH_FAILURES | The grid has been terminated, with some failures.
+State | Description | Final State
+--------- | ----------- | ---------
+LOADED |  The grid has been loaded and is ready to start. | T
+ALLOCATING |  The grid is allocating servers.  | F
+ALLOCATED | The grid has finished allocating servers, with no failures. | F
+ALLOCATED_WITH_FAILURES  | The grid has finished allocating servers, with some failures. | T
+ALLOCATE_FAILED | The grid failed to allocate any servers. | T
+CHECKING  | The grid is in the process of performing server health checks. | F
+CHECKED | The grid has finished performing server health checks, with no failures. | T
+CHECKED_AND_TERMINATING | The allocated servers are checked and the pending server are terminating. | F
+CHECKED_AND_DEPLOYING | The allocated servers are checked and the pending servers are still deploying. | F
+CHECKED_WITH_FAILURES | The grid has finished performing server health checks, with some failures. | T
+STARTING_MONITORS | The grid is in the process of setting up monitoring for the allocated servers. | F
+CANCELLING | The grid is in the process of cancelling. | F
+CANCELLED | The grid has been cancelled. | T
+TERMINATING | The grid is in the process of terminating. | F
+TERMINATED | The grid has been terminated. | T
+TERMINATED_WITH_FAILURES | The grid has been terminated, with some failures. | T
 
 
 
@@ -215,7 +219,7 @@ InstanceID | ID of the grid instance (From POST Call)
 
 # Results Databases (RSDB)
 
-In order to interact with a result database you will need to know the ID, which is retrived via the Repository API (insert link to that here). 
+In order to interact with a result database you will need to know the ID, which is retrived via the [Repository API](http://cdn.soasta.com/productresource/api/repository_api/)
 
 
 ## Get RSDB State
@@ -320,7 +324,7 @@ state | The State you wish to set the RSDB (Accepted values: start, stop, termin
 
 # Test Environment 
 
-In order to interact with a result database you will need to know the ID, which is retrived via the Repository API (insert link to that here). 
+In order to interact with a result database you will need to know the ID, which is retrived via the [Repository API](http://cdn.soasta.com/productresource/api/repository_api/)
 
 ## Get Test Environment State
 
@@ -357,26 +361,26 @@ ID | ID of the RSDB
 ### Test Environment States
 
 
-State | Description
---------- | -----------
-ERROR_BUILD_MISMATCH  | Extracted build does not match the environment's build setting
-TERMINATED_WITH_FAILURES |  Servers encountered failures when stopping
-CANCELLING | Canceling environment servers while launch is in progress
-CANCELLED | Environment servers have been canceled while launch is in progress
-LOADED | The environment is loaded.
-ALLOCATING_DATABASE | The environment is allocating a database server
-ALLOCATED_DATABASE | The environment has allocated a database server
-CHECKED_DATABASE | The environment has checked the database server
-ALLOCATING_MAIN | The environment is allocating a main server
-ALLOCATED_MAIN | The environment has allocated a main server
-CHECKED_MAIN | The environment has checked the main server
-RUNNING | The environment is running.
-TERMINATED | The environment is stopped.
-TERMINATING | The environment is stopping.
-PROCESS_FAILED | Unable to talk to the resultsservice.
-VOLUME_NOT_FORMATTED | The database volume needs to be formatted.
-VOLUME_NOT_AVAILABLE | The volume is not available
-EXTERNALLY_TERMINATED | Instance was terminated by external means. 
+State | Description | Final State
+--------- | ----------- | --------
+ERROR_BUILD_MISMATCH  | Extracted build does not match the environment's build setting | T
+TERMINATED_WITH_FAILURES |  Servers encountered failures when stopping | T
+CANCELLING | Canceling environment servers while launch is in progress | F
+CANCELLED | Environment servers have been canceled while launch is in progress | T
+LOADED | The environment is loaded. | T
+ALLOCATING_DATABASE | The environment is allocating a database server | F
+ALLOCATED_DATABASE | The environment has allocated a database server | F
+CHECKED_DATABASE | The environment has checked the database server | F
+ALLOCATING_MAIN | The environment is allocating a main server | F
+ALLOCATED_MAIN | The environment has allocated a main server | F
+CHECKED_MAIN | The environment has checked the main server | F
+RUNNING | The environment is running. | T
+TERMINATED | The environment is stopped. | T
+TERMINATING | The environment is stopping. | F
+PROCESS_FAILED | Unable to talk to the resultsservice. | T
+VOLUME_NOT_FORMATTED | The database volume needs to be formatted. | T
+VOLUME_NOT_AVAILABLE | The volume is not available | F
+EXTERNALLY_TERMINATED | Instance was terminated by external means. | T
 
 
 ## Start Test Environment
