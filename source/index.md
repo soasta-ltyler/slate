@@ -219,7 +219,7 @@ InstanceID | ID of the grid instance (From POST Call)
 
 # Results Databases (RSDB)
 
-In order to interact with a result database you will need to know the ID, which is retrived via the [Repository API](http://cdn.soasta.com/productresource/api/repository_api/)
+In order to interact with a result database you will need to know the ID, which is retrieved via the [Repository API](http://cdn.soasta.com/productresource/api/repository_api/)
 
 
 ## Get RSDB State
@@ -324,7 +324,7 @@ state | The State you wish to set the RSDB (Accepted values: start, stop, termin
 
 # Test Environment 
 
-In order to interact with a result database you will need to know the ID, which is retrived via the [Repository API](http://cdn.soasta.com/productresource/api/repository_api/)
+In order to interact with a result database you will need to know the ID, which is retrieved via the [Repository API](http://cdn.soasta.com/productresource/api/repository_api/)
 
 ## Get Test Environment State
 
